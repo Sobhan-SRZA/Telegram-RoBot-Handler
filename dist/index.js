@@ -46,14 +46,14 @@ const post_1 = tslib_1.__importDefault(require("./src/functions/post"));
 const Client_1 = tslib_1.__importDefault(require("./src/classes/Client"));
 const logger_1 = tslib_1.__importDefault(require("./src/functions/logger"));
 const fs_1 = require("fs");
-const package_json_1 = tslib_1.__importDefault(require("./package.json"));
 const client = new Client_1.default(), handle = (0, fs_1.readdirSync)(__dirname + "/src/handlers").filter(file => file.endsWith(".js"));
 // Login 
 const main = async () => {
     try {
         // Load Handlers 
         let amount = 0;
-        (0, post_1.default)("Welcome to ".cyan + (package_json_1.default.name).blue + "! | Version: ".cyan + (package_json_1.default.version).blue + "\n" +
+        const packageJSON = await Promise.resolve(`${`${process.cwd()}/package.json`}`).then(s => tslib_1.__importStar(require(s)));
+        (0, post_1.default)("Welcome to ".cyan + (packageJSON.name).blue + "! | Version: ".cyan + (packageJSON.version).blue + "\n" +
             "Coded By ".cyan + ("Sobhan-SRZA").yellow + " & ".cyan + ("Persian Caesar").yellow + " With ".cyan + ("❤️").red + "\n" +
             `Discord: ${("Mr.Sinre").blue}` + " | ".cyan + `${("mr.sinre").blue}` + " | ".cyan + `${("https://dsc.gg/persian-caesar").blue}` + "\n" +
             `GitHub: ${("https://github.com/Sobhan-SRZA").blue}` + " | ".cyan + `${("https://github.com/Persian-Caesar").blue}`, "W", "magenta", "cyan");
@@ -73,7 +73,7 @@ const main = async () => {
                 (0, logger_1.default)("Commands: ".blue +
                     `${client.commands.size}`.cyan + `\n` +
                     "Telegraf.js: ".blue +
-                    `v${package_json_1.default.dependencies.telegraf.replace("^", "")}`.cyan + `\n` +
+                    `v${packageJSON.dependencies.telegraf.replace("^", "")}`.cyan + `\n` +
                     "Node.js: ".blue +
                     `${process.version}`.cyan + `\n` +
                     "Plattform: ".blue +

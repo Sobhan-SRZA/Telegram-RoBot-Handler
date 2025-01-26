@@ -44,8 +44,8 @@ import error from "./src/utils/error";
 import post from "./src/functions/post";
 import TelegramClient from "./src/classes/Client";
 import logger from "./src/functions/logger";
+import packageJSON from "./src/types/package.json";
 import { readdirSync } from "fs";
-import packageJSON from "./package.json";
 
 const
     client = new TelegramClient(),
@@ -54,9 +54,10 @@ const
 // Login 
 const main = async () => {
     try {
-        
+
         // Load Handlers 
         let amount = 0;
+        const packageJSON: packageJSON = await import(`${process.cwd()}/package.json`);
         post(
             "Welcome to ".cyan + (packageJSON.name).blue + "! | Version: ".cyan + (packageJSON.version).blue + "\n" +
             "Coded By ".cyan + ("Sobhan-SRZA").yellow + " & ".cyan + ("Persian Caesar").yellow + " With ".cyan + ("❤️").red + "\n" +

@@ -675,11 +675,7 @@ class Collection extends Map {
 exports.Collection = Collection;
 /**
  * @copyright
- * Coded by Sobhan-SRZA (mr.sinre) | https://github.com/Sobhan-SRZA
- * @copyright
- * Work for Persian Caesar | https://dsc.gg/persian-caesar
- * @copyright
- * Please Mention Us "Persian Caesar", When Have Problem With Using This Code!
+ * discord.js | https://github.com/discordjs/discord.js
  * @copyright
  */ 
 //# sourceMappingURL=Collection.js.map

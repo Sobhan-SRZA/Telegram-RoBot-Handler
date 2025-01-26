@@ -1,19 +1,30 @@
-import CommandType from "../../types/command";
+import { readdirSync } from "fs";
+import client from "../../..";
+import CommandType, { Categories } from "../../types/command";
 import error from "../../utils/error";
-import TelegramClient from "../../classes/Client";
+import firstUpperCase from "../../functions/firstUpperCase";
+import escapeMarkdown from "../../functions/escapeMarkdown";
 
 const command: CommandType = {
   data: {
     name: "help",
     description: "لیست دستورات بات."
   },
-  category: "member",
+  category: "misc",
   cooldown: 10,
   only_owner: false,
   run: async (ctx) => {
     try {
-      ctx.reply("this is help text")
-     } catch (e: any) {
+      let commandList = "";
+      const
+        categories = readdirSync(`${process.cwd()}/dist/src/commands`),
+        botDescription = "";
+
+      categories.forEach(async dir => {
+        commandList += `**${firstUpperCase(dir)}**\n${client.cmds_info_list_str(dir.toLowerCase() as Categories)}\n`;
+      });
+      return await ctx.replyWithMarkdownV2(escapeMarkdown(`${botDescription}**لیست دستورات ربات:**\n${commandList}`))
+    } catch (e: any) {
       error(e)
     }
   }

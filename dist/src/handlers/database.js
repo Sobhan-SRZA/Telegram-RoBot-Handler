@@ -25,9 +25,9 @@ exports.default = async (client) => {
                 break;
             }
             case "mongodb": {
-                // const { MongoDriver } = await import("quickmongo");
-                // driver = new MongoDriver(config.source.database.mongoURL);
-                // await driver.connect();
+                const { MongoDriver } = await Promise.resolve(`${"quickmongo"}`).then(s => tslib_1.__importStar(require(s)));
+                driver = new MongoDriver(config_1.default.source.database.mongoURL);
+                await driver.connect();
                 break;
             }
         }

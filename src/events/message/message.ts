@@ -5,40 +5,35 @@ import error from "../../utils/error";
 import checkCmdCooldown from "../../utils/checkCmdCooldown";
 
 export default async (client: TelegramClient, message: NarrowedContext<Context<Update>, Update.MessageUpdate<Message>>) => {
- try {
-  const db = client.db!;
+  try {
+    const db = client.db!;
 
-  // Filter the bots
-  if (message.from.is_bot)
-   return;
+    // Filter the bots
+    if (message.from.is_bot)
+      return;
 
-  if (message.text && message.text.startsWith("/")) {
-   const
-    // commandName = message.text.slice(1),
-    // args = commandName.split(" ").slice(1),
-    args = message.text.slice(1).trim().split(/ +/g),
-    commandName = args.shift()!.toLowerCase(),
-    command =
-     client.commands.get(commandName) ||
-     client.commands.find(a => a.aliases && a.aliases.includes(commandName));
+    if (message.text && message.text.startsWith("/")) {
+      const
+        args = message.text.slice(1).trim().split(/ +/g),
+        commandName = args.shift()!.toLowerCase(),
+        command =
+          client.commands.get(commandName) ||
+          client.commands.find(a => a.aliases && a.aliases.includes(commandName));
 
-   if (!command)
-    return ;
+      if (!command)
+        return await message.sendMessage("⚠دستور تعریف نشده!");
 
-   console.log(commandName);
-   console.log(args);
+      // Cooldown
+      if (await checkCmdCooldown(client, message, command!))
+        return;
 
-   // Cooldown
-   if (await checkCmdCooldown(client, message, command!))
-    return ;
-
-   // Command Handler
-   await db.add("totalCommandsUsed", 1);
-   return command.run(message);
+      // Command Handler
+      await db.add("totalCommandsUsed", 1);
+      return command.run(message);
+    }
+  } catch (e: any) {
+    error(e);
   }
- } catch (e: any) {
-  error(e);
- }
 }
 /**
  * @copyright

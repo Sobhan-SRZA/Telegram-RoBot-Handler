@@ -1,4 +1,4 @@
-import { IDriver, QuickDB } from "quick.db";
+import { QuickDB } from "quick.db";
 import { error } from "console";
 import post from "../functions/post";
 import config from "../../config";
@@ -6,7 +6,7 @@ import TelegramClient from "../classes/Client";
 
 export default async (client: TelegramClient) => {
     try {
-        let driver: IDriver | undefined;
+        let driver: any;
         switch (config.source.database.type) {
             case "sql": {
                 const { SqliteDriver } = await import("quick.db");
@@ -30,9 +30,10 @@ export default async (client: TelegramClient) => {
             }
 
             case "mongodb": {
-                // const { MongoDriver } = await import("quickmongo");
-                // driver = new MongoDriver(config.source.database.mongoURL);
-                // await driver.connect();
+                const { MongoDriver } = await import("quickmongo"!);
+
+                driver = new MongoDriver(config.source.database.mongoURL);
+                await driver.connect();
                 break;
             }
         };

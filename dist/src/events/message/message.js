@@ -10,15 +10,10 @@ exports.default = async (client, message) => {
         if (message.from.is_bot)
             return;
         if (message.text && message.text.startsWith("/")) {
-            const 
-            // commandName = message.text.slice(1),
-            // args = commandName.split(" ").slice(1),
-            args = message.text.slice(1).trim().split(/ +/g), commandName = args.shift().toLowerCase(), command = client.commands.get(commandName) ||
+            const args = message.text.slice(1).trim().split(/ +/g), commandName = args.shift().toLowerCase(), command = client.commands.get(commandName) ||
                 client.commands.find(a => a.aliases && a.aliases.includes(commandName));
             if (!command)
-                return;
-            console.log(commandName);
-            console.log(args);
+                return await message.sendMessage("⚠دستور تعریف نشده!");
             // Cooldown
             if (await (0, checkCmdCooldown_1.default)(client, message, command))
                 return;

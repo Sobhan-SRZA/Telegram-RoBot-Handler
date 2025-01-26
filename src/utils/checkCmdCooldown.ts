@@ -4,6 +4,7 @@ import TelegramClient from "../classes/Client";
 import error from "./error";
 import CommandType from "../types/command";
 import { Collection } from "../classes/Collection";
+import escapeMarkdown from "../functions/escapeMarkdown";
 
 export default async function checkCmdCooldown(
   client: TelegramClient,
@@ -17,17 +18,17 @@ export default async function checkCmdCooldown(
 
     const
       timestamps = client.cooldowns.get(command.data.name)!,
-      defaultCooldownDuration = 3,
-      cooldownAmount = (command.cooldown ?? defaultCooldownDuration) * 1000;
+      cooldownDuration = (command.cooldown ?? 3),
+      cooldownAmount = cooldownDuration * 1000;
+
 
     if (timestamps.has(userId)) {
       const expirationTime = timestamps.get(userId)! + cooldownAmount;
       if (Date.now() < expirationTime) {
-        const expiredTimestamp = Math.round(expirationTime / 1000);
-        await message.replyWithMarkdownV2(`\`\`\`\n*به دلیل استفاده بیش از حد، شما موقتا از دستور /${command.data.name} محروم شده‌اید. دوباره پس از <t:${expiredTimestamp}:R> می‌توانید از آن استفاده کنید.*\`\`\``)
+        await message.replyWithMarkdownV2(escapeMarkdown(`**⚠ شما به دلیل اسپم ممنوع شدید!**\nبدلیل اسپم از دستور **/${command.data.name}** به مدت \`🕓 ${cooldownDuration} ثانیه\` ممنوع شدید!\n لطفا پس از اتمام زمان دوباره تلاش کنید.`))
         return true;
-      };
-    };
+      }
+    }
 
     timestamps.set(userId, Date.now());
     setTimeout(() => timestamps.delete(userId), cooldownAmount);

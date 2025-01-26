@@ -1,4 +1,4 @@
-import CommandType from "../types/command";
+import CommandType, { Categories } from "../types/command";
 import config from "../../config";
 import { QuickDB } from "quick.db";
 import { Telegraf } from "telegraf";
@@ -16,6 +16,17 @@ export default class TelegramClient extends Telegraf {
         this.commands = new Collection();
         this.cooldowns = new Collection();
         this.db = null;
+    }
+
+    cmds_info_list_str(category_name: Categories) {
+        let description = "";
+        this.commands
+            .filter(cmd => cmd.category === category_name)
+            .forEach((cmd) => {
+                description += `/${cmd.data.name} - \`${cmd.data.description}\`\n`;
+            });
+
+        return description;
     }
 }
 /**

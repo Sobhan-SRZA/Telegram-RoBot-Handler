@@ -4,22 +4,20 @@ exports.default = checkCmdCooldown;
 const tslib_1 = require("tslib");
 const error_1 = tslib_1.__importDefault(require("./error"));
 const Collection_1 = require("../classes/Collection");
+const escapeMarkdown_1 = tslib_1.__importDefault(require("../functions/escapeMarkdown"));
 async function checkCmdCooldown(client, message, command) {
     try {
         const userId = message.from.id;
         if (!client.cooldowns.has(command.data.name))
             client.cooldowns.set(command.data.name, new Collection_1.Collection());
-        const timestamps = client.cooldowns.get(command.data.name), defaultCooldownDuration = 3, cooldownAmount = (command.cooldown ?? defaultCooldownDuration) * 1000;
+        const timestamps = client.cooldowns.get(command.data.name), cooldownDuration = (command.cooldown ?? 3), cooldownAmount = cooldownDuration * 1000;
         if (timestamps.has(userId)) {
             const expirationTime = timestamps.get(userId) + cooldownAmount;
             if (Date.now() < expirationTime) {
-                const expiredTimestamp = Math.round(expirationTime / 1000);
-                await message.replyWithMarkdownV2(`\`\`\`\n*به دلیل استفاده بیش از حد، شما موقتا از دستور /${command.data.name} محروم شده‌اید. دوباره پس از <t:${expiredTimestamp}:R> می‌توانید از آن استفاده کنید.*\`\`\``);
+                await message.replyWithMarkdownV2((0, escapeMarkdown_1.default)(`**⚠ شما به دلیل اسپم ممنوع شدید!**\nبدلیل اسپم از دستور **/${command.data.name}** به مدت \`🕓 ${cooldownDuration} ثانیه\` ممنوع شدید!\n لطفا پس از اتمام زمان دوباره تلاش کنید.`));
                 return true;
             }
-            ;
         }
-        ;
         timestamps.set(userId, Date.now());
         setTimeout(() => timestamps.delete(userId), cooldownAmount);
         return false;

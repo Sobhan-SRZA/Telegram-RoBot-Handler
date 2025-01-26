@@ -1,18 +1,27 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
+const fs_1 = require("fs");
+const __1 = tslib_1.__importDefault(require("../../.."));
 const error_1 = tslib_1.__importDefault(require("../../utils/error"));
+const firstUpperCase_1 = tslib_1.__importDefault(require("../../functions/firstUpperCase"));
+const escapeMarkdown_1 = tslib_1.__importDefault(require("../../functions/escapeMarkdown"));
 const command = {
     data: {
         name: "help",
         description: "لیست دستورات بات."
     },
-    category: "member",
+    category: "misc",
     cooldown: 10,
     only_owner: false,
     run: async (ctx) => {
         try {
-            ctx.reply("this is help text");
+            let commandList = "";
+            const categories = (0, fs_1.readdirSync)(`${process.cwd()}/dist/src/commands`), botDescription = "";
+            categories.forEach(async (dir) => {
+                commandList += `**${(0, firstUpperCase_1.default)(dir)}**\n${__1.default.cmds_info_list_str(dir.toLowerCase())}\n`;
+            });
+            return await ctx.replyWithMarkdownV2((0, escapeMarkdown_1.default)(`${botDescription}**لیست دستورات ربات:**\n${commandList}`));
         }
         catch (e) {
             (0, error_1.default)(e);

@@ -1100,10 +1100,6 @@ export type Keep<Value> = { keep: false } | { keep: true; value: Value };
 export type Comparator<Key, Value> = (firstValue: Value, secondValue: Value, firstKey: Key, secondKey: Key) => number;
 /**
  * @copyright
- * Coded by Sobhan-SRZA (mr.sinre) | https://github.com/Sobhan-SRZA
- * @copyright
- * Work for Persian Caesar | https://dsc.gg/persian-caesar
- * @copyright
- * Please Mention Us "Persian Caesar", When Have Problem With Using This Code!
+ * discord.js | https://github.com/discordjs/discord.js
  * @copyright
  */

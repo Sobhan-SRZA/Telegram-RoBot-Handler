@@ -16,6 +16,15 @@ class TelegramClient extends telegraf_1.Telegraf {
         this.cooldowns = new Collection_1.Collection();
         this.db = null;
     }
+    cmds_info_list_str(category_name) {
+        let description = "";
+        this.commands
+            .filter(cmd => cmd.category === category_name)
+            .forEach((cmd) => {
+            description += `/${cmd.data.name} - \`${cmd.data.description}\`\n`;
+        });
+        return description;
+    }
 }
 exports.default = TelegramClient;
 /**
