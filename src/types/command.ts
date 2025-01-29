@@ -12,8 +12,10 @@ export default interface CommandType {
     aliases?: string[];
     usage?: string;
     cooldown: number;
-    only_owner: boolean;
-    run: (ctx: NarrowedContext<Context<Update>, Update.MessageUpdate<Message>>) => void;
+    only_owner?: boolean;
+    only_group?: boolean;
+    only_admins?: boolean;
+    run: (ctx: NarrowedContext<Context<Update>, Update.MessageUpdate<Message>>, args: string[]) => void;
 }
 
 export type {

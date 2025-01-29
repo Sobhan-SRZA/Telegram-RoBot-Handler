@@ -1,13 +1,12 @@
 import { Context, NarrowedContext } from "telegraf";
 import { Message, Update } from "telegraf/typings/core/types/typegram";
-import TelegramClient from "../classes/Client";
 import error from "./error";
 import CommandType from "../types/command";
 import { Collection } from "../classes/Collection";
 import escapeMarkdown from "../functions/escapeMarkdown";
+import client from "../..";
 
 export default async function checkCmdCooldown(
-  client: TelegramClient,
   message: NarrowedContext<Context<Update>, Update.MessageUpdate<Message>>,
   command: CommandType
 ): Promise<boolean | void> {

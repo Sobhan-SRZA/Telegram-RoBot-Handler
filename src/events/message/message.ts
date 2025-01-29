@@ -3,6 +3,9 @@ import { Context, NarrowedContext } from "telegraf";
 import TelegramClient from "../../classes/Client";
 import error from "../../utils/error";
 import checkCmdCooldown from "../../utils/checkCmdCooldown";
+import checkMember from "../../utils/checkMember";
+import checkAdmin from "../../utils/checkAdmin";
+import checkOwner from "../../utils/checkOwner";
 
 export default async (client: TelegramClient, message: NarrowedContext<Context<Update>, Update.MessageUpdate<Message>>) => {
   try {
@@ -12,25 +15,50 @@ export default async (client: TelegramClient, message: NarrowedContext<Context<U
     if (message.from.is_bot)
       return;
 
-    if (message.text && message.text.startsWith("/")) {
-      const
-        args = message.text.slice(1).trim().split(/ +/g),
-        commandName = args.shift()!.toLowerCase(),
-        command =
-          client.commands.get(commandName) ||
-          client.commands.find(a => a.aliases && a.aliases.includes(commandName));
+    // Filter Commands
+    if (!message.text || !message.text.startsWith("/"))
+      return;
 
-      if (!command)
-        return await message.sendMessage("⚠دستور تعریف نشده!");
+    const
+      args = message.text.slice(1).trim().split(/ +/g),
+      mention = `@${client.botInfo?.username}`;
 
-      // Cooldown
-      if (await checkCmdCooldown(client, message, command!))
+    let commandName = args.shift()!.toLowerCase();
+
+    // Filter Other Bots Commands In Groups 
+    if (message.chat.type !== "private")
+      if (!commandName.includes(mention))
         return;
 
-      // Command Handler
-      await db.add("totalCommandsUsed", 1);
-      return command.run(message);
-    }
+
+    commandName = commandName.replace(mention, "");
+    const command =
+      client.commands.get(commandName) ||
+      client.commands.find(a => a.aliases && a.aliases.includes(commandName))!;
+
+    // Filter Only Valid Commands
+    if (!command && message.chat.type === "private")
+      return await message.sendMessage("⚠دستور تعریف نشده!");
+
+    // Filter Group Commands
+    if (command.only_group && await checkMember(message))
+      return;
+
+    // Filter Admins
+    if (command.only_admins && await checkAdmin(message))
+      return;
+
+    // Filter Owner
+    if (command.only_owner && await checkOwner(message))
+      return;
+
+    // Cooldown
+    if (await checkCmdCooldown(message, command))
+      return;
+
+    // Command Handler
+    await db.add("totalCommandsUsed", 1);
+    return command.run(message, args);
   } catch (e: any) {
     error(e);
   }

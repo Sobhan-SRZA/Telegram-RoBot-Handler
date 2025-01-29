@@ -12,7 +12,6 @@ const command: CommandType = {
   },
   category: "misc",
   cooldown: 10,
-  only_owner: false,
   run: async (ctx) => {
     try {
       let commandList = "";
