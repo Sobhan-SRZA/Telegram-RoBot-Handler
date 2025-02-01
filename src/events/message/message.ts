@@ -6,8 +6,9 @@ import checkCmdCooldown from "../../utils/checkCmdCooldown";
 import checkMember from "../../utils/checkMember";
 import checkAdmin from "../../utils/checkAdmin";
 import checkOwner from "../../utils/checkOwner";
+import MessageContext from "../../types/MessageContext";
 
-export default async (client: TelegramClient, message: NarrowedContext<Context<Update>, Update.MessageUpdate<Message>>) => {
+export default async (client: TelegramClient, message: MessageContext) => {
   try {
     const db = client.db!;
 
@@ -58,7 +59,7 @@ export default async (client: TelegramClient, message: NarrowedContext<Context<U
 
     // Command Handler
     await db.add("totalCommandsUsed", 1);
-    return command.run(message, args);
+    return command.run(client, message, args);
   } catch (e: any) {
     error(e);
   }

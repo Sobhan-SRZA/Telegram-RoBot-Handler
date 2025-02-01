@@ -1,9 +1,8 @@
 import { readdirSync } from "fs";
-import client from "../../..";
 import CommandType, { Categories } from "../../types/command";
 import error from "../../utils/error";
 import firstUpperCase from "../../functions/firstUpperCase";
-import escapeMarkdown from "../../functions/escapeMarkdown";
+import markdownToHtml from "../../functions/markdownToHtml";
 
 const command: CommandType = {
   data: {
@@ -12,7 +11,7 @@ const command: CommandType = {
   },
   category: "misc",
   cooldown: 10,
-  run: async (ctx) => {
+  run: async (client, ctx) => {
     try {
       let commandList = "";
       const
@@ -22,7 +21,9 @@ const command: CommandType = {
       categories.forEach(async dir => {
         commandList += `**${firstUpperCase(dir)}**\n${client.cmds_info_list_str(dir.toLowerCase() as Categories)}\n`;
       });
-      return await ctx.replyWithMarkdownV2(escapeMarkdown(`${botDescription}**لیست دستورات ربات:**\n${commandList}`))
+      return await ctx.reply(markdownToHtml(`${botDescription}**لیست دستورات ربات:**\n${commandList}`), {
+        parse_mode: "HTML"
+      })
     } catch (e: any) {
       error(e)
     }

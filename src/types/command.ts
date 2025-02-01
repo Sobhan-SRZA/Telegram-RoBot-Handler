@@ -1,5 +1,5 @@
-import { Context, NarrowedContext } from "telegraf";
-import { Message, Update } from "telegraf/typings/core/types/typegram";
+import MessageContext from "./MessageContext";
+import TelegramClient from "../classes/Client";
 
 type Categories = "misc" | "admin" | "owner" | "nsfw";
 
@@ -15,7 +15,7 @@ export default interface CommandType {
     only_owner?: boolean;
     only_group?: boolean;
     only_admins?: boolean;
-    run: (ctx: NarrowedContext<Context<Update>, Update.MessageUpdate<Message>>, args: string[]) => void;
+    run: (client: TelegramClient, ctx: MessageContext, args: string[]) => void;
 }
 
 export type {

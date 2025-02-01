@@ -1,8 +1,8 @@
 {
-  "name": "telegram-bot",
-  "version": "0.0.0",
+  "name": "telegram-bot-handler",
+  "version": "0.0.1",
   "author": "Sobhan-SRZA (mr.sinre) & Persian Caesar",
-  "description": "Telegram bot.",
+  "description": "A handler for telegraf.js with best performance.",
   "main": "dist/index.js",
   "license": "BSD-3-Clause",
   "scripts": {

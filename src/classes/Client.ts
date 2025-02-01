@@ -3,8 +3,9 @@ import config from "../../config";
 import { QuickDB } from "quick.db";
 import { Telegraf } from "telegraf";
 import { Collection } from "./Collection";
+import { MyContext } from "../types/MessageContext";
 
-export default class TelegramClient extends Telegraf {
+export default class TelegramClient extends Telegraf<MyContext> {
     commands: Collection<string, CommandType>;
     cooldowns: Collection<string, Collection<number, number>>;
     config;
