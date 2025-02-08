@@ -1,8 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = firstUpperCase;
-function firstUpperCase(string) {
-    return `${string[0].toUpperCase()}${string.slice(1).toLowerCase()}`;
+import { UpdateType } from "telegraf/typings/telegram-types";
+import TelegramClient from "../classes/Client";
+
+export default interface EventType {
+    name: UpdateType | Function;
+    run: (client: TelegramClient, ...args: any) => Promise<any>;
 }
 /**
  * @copyright
@@ -11,5 +12,4 @@ function firstUpperCase(string) {
  *
  * If you encounter any issues or need assistance with this code,
  * please make sure to credit "Persian Caesar" in your documentation or communications.
- */ 
-//# sourceMappingURL=firstUpperCase.js.map
+ */
