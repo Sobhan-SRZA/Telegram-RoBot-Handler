@@ -1,9 +1,7 @@
-import { Message, Update } from "telegraf/typings/core/types/typegram";
-import { NarrowedContext } from "telegraf";
-import { MyContext } from "./MessageContext";
+import MessageContext from "./MessageContext";
 import TelegramClient from "../classes/Client";
 
-type Categories = "misc" | "admin" | "owner" | "chats";
+type Categories = "misc" | "admin" | "owner" | "nsfw";
 
 export default interface CommandType {
     data: {
@@ -17,8 +15,7 @@ export default interface CommandType {
     only_owner?: boolean;
     only_group?: boolean;
     only_admins?: boolean;
-    only_privet?: boolean;
-    run: (client: TelegramClient, ctx: NarrowedContext<MyContext, Update.MessageUpdate<Message>>, args: string[]) => Promise<any>;
+    run: (client: TelegramClient, ctx: MessageContext, args: string[]) => void;
 }
 
 export type {
@@ -26,9 +23,10 @@ export type {
 }
 /**
  * @copyright
- * Code by Sobhan-SRZA (mr.sinre) | https://github.com/Sobhan-SRZA
- * Developed for Persian Caesar | https://github.com/Persian-Caesar | https://dsc.gg/persian-caesar
- *
- * If you encounter any issues or need assistance with this code,
- * please make sure to credit "Persian Caesar" in your documentation or communications.
+ * Coded by Sobhan-SRZA (mr.sinre) | https://github.com/Sobhan-SRZA
+ * @copyright
+ * Work for Persian Caesar | https://dsc.gg/persian-caesar
+ * @copyright
+ * Please Mention Us "Persian Caesar", When Have Problem With Using This Code!
+ * @copyright
  */
