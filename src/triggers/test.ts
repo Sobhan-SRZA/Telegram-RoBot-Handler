@@ -1,9 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = escapeMarkdown;
-function escapeMarkdown(text) {
-    return text.replace(/[_[\]()~>#+\-=|{}.!]/g, '\\$&');
-}
+import error from "../utils/error";
+import TelegramClient from "../classes/Client";
+
+export default async (client: TelegramClient) => {
+    try {
+    } catch (e: any) {
+        error(e)
+    }
+};
 /**
  * @copyright
  * Coded by Sobhan-SRZA (mr.sinre) | https://github.com/Sobhan-SRZA
@@ -12,5 +15,4 @@ function escapeMarkdown(text) {
  * @copyright
  * Please Mention Us "Persian Caesar", When Have Problem With Using This Code!
  * @copyright
- */ 
-//# sourceMappingURL=escapeMarkdown.js.map
+ */
